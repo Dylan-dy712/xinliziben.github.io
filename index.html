@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>积极心理资本测评</title>
+    <style>
+        :root {
+            --primary-color: #4a6fa5;
+            --secondary-color: #6b8cbc;
+            --accent-color: #ff9a3c;
+            --light-color: #f5f7fa;
+            --dark-color: #2c3e50;
+            --success-color: #2ecc71;
+            --warning-color: #f39c12;
+            --danger-color: #e74c3c;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Microsoft YaHei', 'Segoe UI', sans-serif;
+        }
+        
+        body {
+            background-color: #f0f2f5;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 30px 0;
+            text-align: center;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card-title {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--light-color);
+        }
+        
+        .btn {
+            display: inline-block;
+            background: var(--primary-color);
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+        
+        .btn:hover {
+            background: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+        
+        .btn-accent {
+            background: var(--accent-color);
+        }
+        
+        .btn-accent:hover {
+            background: #ff8a1c;
+        }
+        
+        .progress-container {
+            margin: 30px 0;
+        }
+        
+        .progress-bar {
+            height: 10px;
+            background: var(--light-color);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        
+        .progress {
+            height: 100%;
+            background: var(--accent-color);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+        
+        .question-container {
+            margin-bottom: 20px;
+            padding: 20px;
+            border-radius: 8px;
+            background: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        .question-text {
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+        
+        .options-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 10px;
+        }
+        
+        .option {
+            padding: 12px 10px;
+            text-align: center;
+            background: var(--light-color);
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .option:hover {
+            background: #e6e9f0;
+        }
+        
+        .option.selected {
+            background: var(--primary-color);
+            color: white;
+        }
+        
+        .dimension-score {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            padding: 10px;
+            background: var(--light-color);
+            border-radius: 5px;
+        }
+        
+        .dimension-name {
+            font-weight: 600;
+        }
+        
+        .score-bar {
+            height: 10px;
+            background: #e0e0e0;
+            border-radius: 5px;
+            margin: 10px 0;
+            overflow: hidden;
+        }
+        
+        .score-fill {
+            height: 100%;
+            background: var(--primary-color);
+        }
+        
+        .result-summary {
+            text-align: center;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            margin-top: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .total-score {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin: 15px 0;
+        }
+        
+        .interpretation {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-top: 20px;
+            text-align: left;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .options-container {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .dimension-score {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>积极心理资本测评</h1>
+            <p class="subtitle">基于张阔等人修订的《积极心理资本问卷》</p>
+        </header>
+        
+        <div id="intro-section" class="card">
+            <h2 class="card-title">测评介绍</h2>
+            <p>本测评基于张阔等人在2010年修订的《积极心理资本问卷》，包含自我效能、韧性、希望、乐观四个维度和26个题项。</p>
+            <p>测评采用7点计分法，大约需要5-10分钟完成。</p>
+            <button id="start-btn" class="btn btn-accent" style="margin-top: 20px;">开始测评</button>
+        </div>
+        
+        <div id="test-section" class="card" style="display: none;">
+            <h2 class="card-title">积极心理资本测评</h2>
+            
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress" id="progress-bar"></div>
+                </div>
+                <p id="progress-text">进度：0/26</p>
+            </div>
+            
+            <div id="question-container"></div>
+            
+            <div class="nav-buttons">
+                <button id="prev-btn" class="btn">上一题</button>
+                <button id="next-btn" class="btn">下一题</button>
+            </div>
+        </div>
+        
+        <div id="result-section" class="card" style="display: none;">
+            <h2 class="card-title">测评结果</h2>
+            
+            <div class="result-summary">
+                <h3>您的积极心理资本总分</h3>
+                <div class="total-score" id="total-score">0</div>
+                <p>得分越高，表示您的积极心理资本水平越高</p>
+            </div>
+            
+            <h3 style="margin-top: 30px;">各维度得分</h3>
+            
+            <div id="dimension-scores"></div>
+            
+            <div class="interpretation">
+                <h3>结果解读</h3>
+                <p id="result-interpretation"></p>
+            </div>
+            
+            <div style="text-align: center; margin-top: 30px;">
+                <button id="restart-btn" class="btn btn-accent">重新测评</button>
+            </div>
+        </div>
+        
+        <footer>
+            <p>本测评仅用于自我了解，不作为专业诊断依据</p>
+            <p>© 2025 积极心理资本测评</p>
+        </footer>
+    </div>
+
+    <script>
+        // 问卷数据
+        const questionnaire = {
+            title: "积极心理资本问卷",
+            dimensions: [
+                { name: "自我效能", items: [1, 3, 5, 7, 9, 11, 13] },
+                { name: "韧性", items: [2, 4, 6, 8, 10, 12, 14] },
+                { name: "希望", items: [15, 17, 19, 21, 23, 25] },
+                { name: "乐观", items: [16, 18, 20, 22, 24, 26] }
+            ],
+            reverseItems: [8, 10, 12, 14, 25],
+            questions: [
+                "很多人欣赏我的才干。",
+                "我不爱生气。",
+                "我的见解和能力超过一般人。",
+                "遇到挫折时，我能很快地恢复过来。",
+                "我对自己的能力很有信心。",
+                "生活中的不愉快，我很少在意。",
+                "我总是能出色地完成任务。",
+                "糟糕的经历会让我郁闷很久。",
+                "面对困难时我会很冷静地寻求解决的方法。",
+                "我觉得自己活得很累。",
+                "我乐于承担困难和有挑战性的工作。",
+                "不顺心的时候，我容易垂头丧气。",
+                "身处逆境时，我会积极尝试不同的策略。",
+                "压力大的时候，我会吃不好、睡不香。",
+                "我积极地学习和工作，以实现自己的理想。",
+                "情况不确定时，我总是预期会有好的结果。",
+                "我正在为实现自己的目标而努力。",
+                "我总是看到事物好的一面。",
+                "我充满信心地追求自己的目标。",
+                "我觉得社会上好人还是占绝大多数。",
+                "对自己的学习和生活，我有一定的规划。",
+                "大多数的时候，我都是意气风发的。",
+                "我很清楚自己想要什么样的生活。",
+                "我觉得生活是美好的。",
+                "我也不知道自己的生活目标是什么。",
+                "我觉得前途充满希望。"
+            ],
+            options: [
+                { value: 1, text: "完全不符合" },
+                { value: 2, text: "不符合" },
+                { value: 3, text: "有点不符合" },
+                { value: 4, text: "说不清" },
+                { value: 5, text: "有点符合" },
+                { value: 6, text: "比较符合" },
+                { value: 7, text: "完全符合" }
+            ]
+        };
+
+        // 应用状态
+        let state = {
+            currentQuestion: 0,
+            answers: new Array(26).fill(0),
+            section: 'intro' // intro, test, result
+        };
+
+        // DOM元素
+        const introSection = document.getElementById('intro-section');
+        const testSection = document.getElementById('test-section');
+        const resultSection = document.getElementById('result-section');
+        const startBtn = document.getElementById('start-btn');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const restartBtn = document.getElementById('restart-btn');
+        const questionContainer = document.getElementById('question-container');
+        const progressBar = document.getElementById('progress-bar');
+        const progressText = document.getElementById('progress-text');
+        const totalScoreElement = document.getElementById('total-score');
+        const dimensionScoresElement = document.getElementById('dimension-scores');
+        const resultInterpretationElement = document.getElementById('result-interpretation');
+
+        // 初始化应用
+        function initApp() {
+            startBtn.addEventListener('click', startTest);
+            prevBtn.addEventListener('click', prevQuestion);
+            nextBtn.addEventListener('click', nextQuestion);
+            restartBtn.addEventListener('click', restartTest);
+            
+            // 加载保存的状态（如果有）
+            const savedState = localStorage.getItem('ppqState');
+            if (savedState) {
+                state = JSON.parse(savedState);
+                if (state.section === 'test') {
+                    showTestSection();
+                    renderQuestion();
+                } else if (state.section === 'result') {
+                    showResultSection();
+                }
+            }
+        }
+
+        // 开始测试
+        function startTest() {
+            state.currentQuestion = 0;
+            state.answers = new Array(26).fill(0);
+            state.section = 'test';
+            saveState();
+            showTestSection();
+            renderQuestion();
+        }
+
+        // 显示测试部分
+        function showTestSection() {
+            introSection.style.display = 'none';
+            testSection.style.display = 'block';
+            resultSection.style.display = 'none';
+        }
+
+        // 显示结果部分
+        function showResultSection() {
+            introSection.style.display = 'none';
+            testSection.style.display = 'none';
+            resultSection.style.display = 'block';
+            calculateResults();
+        }
+
+        // 渲染问题
+        function renderQuestion() {
+            const questionIndex = state.currentQuestion;
+            const questionText = questionnaire.questions[questionIndex];
+            const questionNumber = questionIndex + 1;
+            
+            // 更新进度
+            const progress = (questionIndex / 25) * 100;
+            progressBar.style.width = `${progress}%`;
+            progressText.textContent = `进度：${questionNumber}/26`;
+            
+            // 渲染问题
+            questionContainer.innerHTML = `
+                <div class="question-text">${questionNumber}. ${questionText}</div>
+                <div class="options-container">
+                    ${questionnaire.options.map(option => `
+                        <div class="option ${state.answers[questionIndex] === option.value ? 'selected' : ''}" 
+                             data-value="${option.value}">
+                            ${option.value}. ${option.text}
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+            
+            // 添加选项点击事件
+            document.querySelectorAll('.option').forEach(option => {
+                option.addEventListener('click', () => {
+                    const value = parseInt(option.getAttribute('data-value'));
+                    state.answers[state.currentQuestion] = value;
+                    saveState();
+                    renderQuestion();
+                });
+            });
+            
+            // 更新按钮状态
+            prevBtn.disabled = questionIndex === 0;
+            nextBtn.textContent = questionIndex === 25 ? '查看结果' : '下一题';
+        }
+
+        // 上一题
+        function prevQuestion() {
+            if (state.currentQuestion > 0) {
+                state.currentQuestion--;
+                renderQuestion();
+            }
+        }
+
+        // 下一题
+        function nextQuestion() {
+            if (state.currentQuestion < 25) {
+                state.currentQuestion++;
+                renderQuestion();
+            } else {
+                // 检查是否所有问题都已回答
+                if (state.answers.includes(0)) {
+                    alert('请完成所有题目后再提交');
+                    return;
+                }
+                state.section = 'result';
+                saveState();
+                showResultSection();
+            }
+        }
+
+        // 重新开始测试
+        function restartTest() {
+            state.section = 'intro';
+            saveState();
+            introSection.style.display = 'block';
+            testSection.style.display = 'none';
+            resultSection.style.display = 'none';
+        }
+
+        // 计算得分
+        function calculateResults() {
+            // 处理反向计分
+            const processedAnswers = [...state.answers];
+            questionnaire.reverseItems.forEach(index => {
+                // 题目索引从0开始，而题目编号从1开始
+                const questionIndex = index - 1;
+                processedAnswers[questionIndex] = 8 - processedAnswers[questionIndex];
+            });
+            
+            // 计算各维度得分
+            const dimensionScores = questionnaire.dimensions.map(dimension => {
+                const score = dimension.items.reduce((sum, itemNum) => {
+                    return sum + processedAnswers[itemNum - 1];
+                }, 0);
+                return {
+                    name: dimension.name,
+                    score: score,
+                    maxScore: dimension.items.length * 7,
+                    percentage: (score / (dimension.items.length * 7)) * 100
+                };
+            });
+            
+            // 计算总分
+            const totalScore = processedAnswers.reduce((sum, score) => sum + score, 0);
+            const maxTotalScore = 26 * 7;
+            const totalPercentage = (totalScore / maxTotalScore) * 100;
+            
+            // 显示总分
+            totalScoreElement.textContent = totalScore;
+            
+            // 显示各维度得分
+            dimensionScoresElement.innerHTML = dimensionScores.map(dimension => `
+                <div class="dimension-score">
+                    <span class="dimension-name">${dimension.name}</span>
+                    <span>${dimension.score} / ${dimension.maxScore}</span>
+                </div>
+                <div class="score-bar">
+                    <div class="score-fill" style="width: ${dimension.percentage}%"></div>
+                </div>
+            `).join('');
+            
+            // 显示结果解读
+            let interpretation = "";
+            if (totalPercentage >= 80) {
+                interpretation = "您的积极心理资本水平很高。您对自己有信心，能够积极面对挑战，对未来充满希望，并且在面对困难时表现出很强的韧性。继续保持这种积极心态，它将是您人生道路上的宝贵财富。";
+            } else if (totalPercentage >= 60) {
+                interpretation = "您的积极心理资本水平良好。您总体上对自己有信心，能够较好地应对生活中的挑战，对未来抱有积极态度。在某些方面还有提升空间，继续发展您的积极心理资本将有助于您更好地应对未来的挑战。";
+            } else if (totalPercentage >= 40) {
+                interpretation = "您的积极心理资本水平中等。您在某些方面对自己有信心，但可能在其他方面存在一些疑虑。建议您关注自己的优势，培养积极的思维方式，提高应对挑战的能力。";
+            } else {
+                interpretation = "您的积极心理资本水平有待提升。您可能对自己缺乏信心，面对挑战时容易感到沮丧，或对未来感到不确定。建议您关注自己的积极品质，学习应对压力的方法，培养乐观的心态。如有需要，可以寻求专业心理咨询师的帮助。";
+            }
+            
+            resultInterpretationElement.textContent = interpretation;
+        }
+
+        // 保存状态到本地存储
+        function saveState() {
+            localStorage.setItem('ppqState', JSON.stringify(state));
+        }
+
+        // 初始化应用
+        document.addEventListener('DOMContentLoaded', initApp);
+    </script>
+</body>
+</html>
